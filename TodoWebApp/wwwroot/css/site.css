@@ -1,0 +1,35 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.todo-form {
+  display: flex;
+  width: 100%;
+  height: max-content;
+  gap: 1em;
+}
+.todo-form-item {
+  display: flex;
+  flex-direction: column;
+}
+.todo-form-item > input {
+  height: 40px;
+}
+.todo-form-item:last-of-type {
+  justify-content: flex-end;
+}   

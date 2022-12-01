@@ -1,0 +1,213 @@
+﻿@model TodoWebApp.Models.HomeViewModel
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+@{
+    ViewData["Title"] = "CSR";
+
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+}
+
+<h1>CSR</h1>
+<input id="RequestVerificationToken" type="hidden" value="@requestToken" />
+
+<div class="mt-xl-5 w-100 d-flex justify-content-center">
+    <form method="PUT" action="javascript:void(0);" onsubmit="addTodo()" class="row d-flex justify-content-center">
+        <div class="col-auto">
+            <input id="add-done" type="checkbox" value="false" class="form-check-input"
+                style="height: 30px; width: 30px; cursor: pointer;" />
+            @*<label class="form-check-label">@Html.DisplayNameFor(model => model.Done)</label>*@
+        </div>
+
+        <div class="col-sm">
+            @*<label>@Html.DisplayNameFor(model => model.Title)</label>*@
+            <input id="add-title" class="form-control" placeholder="@Html.DisplayNameFor(model => model.Title)" />
+            <span id="add-title-err" class="text-danger"></span>
+        </div>
+
+        <div class="col-sm">
+            @*<label asp-for="CreatedDate" class="control-label">@Html.DisplayNameFor(model =>
+                model.CreatedDate)</label>*@
+            <input id="add-created-date" asp-for="CreatedDate" class="form-control"
+                placeholder="@Html.DisplayNameFor(model => model.CreatedDate)" style="cursor: pointer;" />
+            @*@Html.TextBoxFor(model => model.CreatedDate, @"{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", id = "add-created-date" })*@
+            <span id="add-created-date-err" class="text-danger"></span>
+        </div>
+
+        <div class="col-auto">
+            <input type="submit" value="ADD" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th style="width: 60px;">@Html.DisplayNameFor(m => m.Done)</th>
+            <th>@Html.DisplayNameFor(m => m.Title)</th>
+            <th>@Html.DisplayNameFor(m => m.CreatedDate)</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody id="table-todos">
+        @foreach (var todo in Model.Todos)
+        {
+            <tr style="height: max-content;">
+                <td style="width: 60px; height: 100%;">
+                    <div class="d-flex align-items-center justify-content-center" style="width: 100%; height:100%;">
+                                <input class="form-check-input edit-done" type="checkbox" disabled @(todo.Done ? "checked" : "") />
+                    </div>
+                </td>
+                <td><input type="text" class="form-control-plaintext edit-title" readonly value="@todo.Title" /></td>
+                <td class="h-100">
+                    <p class="edit-created-date h-100 d-grid align-items-center" data-raw-date="@todo.CreatedDate">@todo.CreatedDate</p>
+                </td>
+                <td class="text-end">
+                    <div class="h-100 w-100 d-flex align-items-center justify-content-center">
+                        <a data-todo-id="@todo.Id" style="cursor: pointer;" class="edit-todo">Edit</a>&nbsp;|&nbsp;
+                        <a data-todo-id="@todo.Id" style="cursor: pointer;" class="delete-todo">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+<script>
+    const apiURL = window.location.origin + "/api/todos"
+
+    let clientTodos = []
+    const editBtns = document.getElementsByClassName("edit-todo")
+    const deleteBtns = document.getElementsByClassName("delete-todo")
+
+    const getInputValue = (id) => document.getElementById(id).value.trim()
+
+    const customHeaders = { 
+        'Accept': 'application/json', 
+        'Content-Type': 'application/json', 
+        RequestVerificationToken: document.getElementById("RequestVerificationToken").value
+    }
+
+    function getTodos() {
+        fetch(apiURL + "/todos")
+            .then(res => res.json())
+            .then(data => {
+                console.table(data)
+                clientTodos = data
+            })
+            .catch(err => console.error('Unable to todos.', err))
+    }
+
+    function addTodo() {
+        const table = document.getElementById("table-todos")
+        const todo = {
+            title: getInputValue("add-title"),
+            done: document.getElementById('add-done').checked,
+            createdDate: getInputValue("add-created-date")
+        }
+
+        fetch(apiURL + "/create-todo", { method: 'PUT', headers: customHeaders, body: JSON.stringify(todo) })
+            .then(res => res.json())
+            .then(data => {
+                if (data.title) {
+                    console.table(data)
+                    clientTodos.push(data)
+                    const tr = document.createElement("tr")
+                    tr.style.height = "max-content"
+
+                    tr.innerHTML = `
+                    <td style="width: 60px; height: 100%;">
+                        <div class="d-flex align-items-center justify-content-center" style="width: 100%; height:100%;">
+                        <input class="form-check-input edit-done" type="checkbox" disabled ${data.done ? 'checked' : ''} />
+                    </div>
+                    </td>
+                    <td><input type="text" class="form-control-plaintext edit-title" readonly value="${data.title}" /></td>
+                    <td class="h-100">
+                        <p class="edit-created-date h-100 d-grid align-items-center">
+                            ${new Date(data.createdDate).toLocaleString()}
+                        </p>
+                    </td>
+                    <td class="text-end">
+                       <div class="h-100 w-100 d-flex align-items-center justify-content-center">
+                           <a data-todo-id="${data.id}" style="cursor: pointer;" class="edit-todo">Edit</a>&nbsp;|&nbsp;
+                           <a data-todo-id="${data.id}" style="cursor: pointer;" class="delete-todo">Delete</a>
+                       </div>
+                    </td>
+                    `
+
+                    table.appendChild(tr)
+                    addListeners()
+                }
+
+            })
+            .catch(err => console.error('Unable to create todo.', err))
+    }
+
+    function editTodo(id, title, done, createdDate) {
+        const todo = { id, title, done, createdDate }
+        console.log(todo)
+
+        fetch(apiURL + '/update-todo', { method: 'POST', headers: customHeaders, body: JSON.stringify(todo) })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+            })
+            .catch(error => console.error('Unable to edit todo', error))
+    }
+    
+
+    function deleteTodo(id, row) {
+        fetch(`${apiURL}/delete-todo/${id}`, { method: 'DELETE', headers: customHeaders })
+            .then(res => res.json())
+            .then(data => {
+                if (data.title) {
+                    row.remove()
+                }
+            })
+            .catch(error => console.error('Unable to delete item.', error))
+    }
+
+    function addListeners() {
+        Array.from(editBtns).forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = Number(btn.dataset.todoId)
+                const row = btn.parentElement.parentElement.parentElement
+                const titleInput = row.getElementsByClassName("edit-title")[0]
+                const doneInput = row.getElementsByClassName("edit-done")[0]
+                const createdDate = row.getElementsByClassName("edit-created-date")[0].textContent
+
+                if (btn.textContent === "Edit") {
+                    btn.textContent = "Save"
+                
+                    titleInput.removeAttribute("readonly")
+                    titleInput.classList.remove("form-control-plaintext")
+                    titleInput.classList.add("form-control")
+
+                  doneInput.removeAttribute("disabled")
+                } else {
+                    editTodo(id, titleInput.value.trim(), doneInput.checked, createdDate)
+                    btn.textContent = "Edit"
+
+                    titleInput.setAttribute("readonly", "")
+                    titleInput.classList.remove("form-control")
+                    titleInput.classList.add("form-control-plaintext")
+
+                    doneInput.setAttribute("disabled", "")
+                }
+            
+            })
+        })
+
+        Array.from(deleteBtns).forEach(btn => {
+            btn.addEventListener("click", () => {
+                deleteTodo(Number(btn.dataset.todoId), btn.parentElement.parentElement.parentElement)
+            })
+        })
+    }
+
+    addListeners()
+    
+</script>
+}

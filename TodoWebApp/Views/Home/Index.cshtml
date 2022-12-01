@@ -1,0 +1,62 @@
+﻿@model TodoWebApp.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "SSR";
+}
+
+<div class="mt-xl-5 w-100 d-flex justify-content-center">
+    <form asp-action="Create" class="row d-flex justify-content-center">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="col-auto">
+            <input class="form-check-input" style="height: 30px; width: 30px; cursor: pointer;" asp-for="Done" />
+            @*<label class="form-check-label" asp-for="Done">@Html.DisplayNameFor(model => model.Done)</label>*@
+        </div>
+
+        <div class="col-sm">
+            @*<label asp-for="Title">@Html.DisplayNameFor(model => model.Title)</label>*@
+            <input asp-for="Title" class="form-control" placeholder="@Html.DisplayNameFor(model => model.Title)" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="col-sm">
+            @*<label asp-for="CreatedDate" class="control-label">@Html.DisplayNameFor(model =>
+                model.CreatedDate)</label>*@
+            <input asp-for="CreatedDate" class="form-control"
+                placeholder="@Html.DisplayNameFor(model => model.CreatedDate)" style="cursor: pointer;" />
+            <span asp-validation-for="CreatedDate" class="text-danger"></span>
+        </div>
+
+        <div class="col-auto">
+            <input type="submit" value="ADD" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th style="width: 60px;">@Html.DisplayNameFor(m => m.Done)</th>
+            <th>@Html.DisplayNameFor(m => m.Title)</th>
+            <th>@Html.DisplayNameFor(m => m.CreatedDate)</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var todo in Model.Todos)
+        {
+            <tr>
+                <td style="width: 60px; text-align: center;">
+                    <input class="form-check-input" type="checkbox" disabled @(todo.Done ? "checked" : "") />
+                </td>
+                <td>@Html.DisplayFor(m => todo.Title)</td>
+                <td>@Html.DisplayFor(m => todo.CreatedDate)</td>
+                <td class="text-end">
+                    <a asp-action="Edit" asp-route-id="@todo.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@todo.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
