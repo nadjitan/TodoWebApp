@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <!--Production-->
-  <PropertyGroup Condition=" '$(Configuration)' != '' AND '$(Configuration)' != 'Debug' ">
+  <PropertyGroup Condition="'$(Configuration)' != '' AND '$(Configuration)' != 'Debug'">
     <InvariantGlobalization>true</InvariantGlobalization>
     <EnvironmentName>Production</EnvironmentName>
   </PropertyGroup>

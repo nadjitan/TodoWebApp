@@ -3,7 +3,7 @@ using TodoWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
-    EnvironmentName = Environments.Staging
+    EnvironmentName = Environments.Production
 });
 
 if (builder.Environment.IsDevelopment())
