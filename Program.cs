@@ -1,9 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using TodoWebApp.Data;
+
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<TodoWebAppContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("TodoWebAppContext") ?? throw new InvalidOperationException("Connection string 'TodoWebAppContext' not found.")));
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<TodoWebAppContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("TodoWebAppContext") ?? throw new InvalidOperationException("Connection string 'TodoWebAppContext' not found.")));
+}
+else
+{
+    builder.Services.AddDbContext<TodoWebAppContext>(options =>
+        options.UseSqlServer(Environment.GetEnvironmentVariable("DATABASE_URL")!));
+}
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
