@@ -11,7 +11,7 @@ if (builder.Environment.IsDevelopment())
 else
 {
     builder.Services.AddDbContext<TodoWebAppContext>(options =>
-        options.UseSqlServer(Environment.GetEnvironmentVariable("DATABASE_URL")!));
+        options.UseSqlServer(Environment.GetEnvironmentVariable("MYSQL_URL")!));
 }
 
 
