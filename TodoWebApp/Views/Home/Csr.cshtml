@@ -6,9 +6,12 @@
     ViewData["Title"] = "CSR";
 
     var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+
+    var dt = new DateTime(DateTime.Now.Ticks, DateTimeKind.Unspecified);
+    var isoDateString = dt.ToString("O");
 }
 
-<h1>CSR</h1>
+<h2>CSR</h2>
 <input id="RequestVerificationToken" type="hidden" value="@requestToken" />
 
 <div class="mt-xl-5 w-100 d-flex justify-content-center">
@@ -28,7 +31,7 @@
         <div class="col-sm">
             @*<label asp-for="CreatedDate" class="control-label">@Html.DisplayNameFor(model =>
                 model.CreatedDate)</label>*@
-            <input id="add-created-date" asp-for="CreatedDate" class="form-control"
+            <input id="add-created-date" class="form-control" type="datetime-local" value="@isoDateString"
                 placeholder="@Html.DisplayNameFor(model => model.CreatedDate)" style="cursor: pointer;" />
             @*@Html.TextBoxFor(model => model.CreatedDate, @"{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", id = "add-created-date" })*@
             <span id="add-created-date-err" class="text-danger"></span>
@@ -76,13 +79,13 @@
 
 @section Scripts {
 <script>
-    const apiURL = window.location.origin + "/api/todos"
+    const apiURL = window.location.origin + "/api/todos/"
 
     let clientTodos = []
     const editBtns = document.getElementsByClassName("edit-todo")
     const deleteBtns = document.getElementsByClassName("delete-todo")
 
-    const getInputValue = (id) => document.getElementById(id).value.trim()
+    const getInputValue = id => document.getElementById(id).value.trim()
 
     const customHeaders = { 
         'Accept': 'application/json', 
@@ -91,13 +94,13 @@
     }
 
     function getTodos() {
-        fetch(apiURL + "/todos")
+        fetch(apiURL)
             .then(res => res.json())
             .then(data => {
                 console.table(data)
                 clientTodos = data
             })
-            .catch(err => console.error('Unable to todos.', err))
+            .catch(err => console.error('Unable to get todos.', err))
     }
 
     function addTodo() {
@@ -108,7 +111,7 @@
             createdDate: getInputValue("add-created-date")
         }
 
-        fetch(apiURL + "/create-todo", { method: 'PUT', headers: customHeaders, body: JSON.stringify(todo) })
+        fetch(apiURL + "create-todo", { method: 'PUT', headers: customHeaders, body: JSON.stringify(todo) })
             .then(res => res.json())
             .then(data => {
                 if (data.title) {
@@ -145,39 +148,35 @@
             .catch(err => console.error('Unable to create todo.', err))
     }
 
-    function editTodo(id, title, done, createdDate) {
-        const todo = { id, title, done, createdDate }
-        console.log(todo)
+    function editTodo(id, title, done) {
+        const todo = { id, title, done }
 
-        fetch(apiURL + '/update-todo', { method: 'POST', headers: customHeaders, body: JSON.stringify(todo) })
+        fetch(apiURL + 'update-todo', { method: 'PATCH', headers: customHeaders, body: JSON.stringify(todo) })
             .then(res => res.json())
-            .then(data => {
-                console.log(data)
-            })
-            .catch(error => console.error('Unable to edit todo', error))
+            .then(data => console.log(data))
+            .catch(error => console.error('Unable to edit todo.', error))
     }
     
-
     function deleteTodo(id, row) {
-        fetch(`${apiURL}/delete-todo/${id}`, { method: 'DELETE', headers: customHeaders })
+        fetch(apiURL + `delete-todo/${id}`, { method: 'DELETE', headers: customHeaders })
             .then(res => res.json())
             .then(data => {
-                if (data.title) {
-                    row.remove()
-                }
+                if (data.title) row.remove()
             })
             .catch(error => console.error('Unable to delete item.', error))
     }
 
     function addListeners() {
         Array.from(editBtns).forEach(btn => {
-            btn.addEventListener("click", () => {
-                const id = Number(btn.dataset.todoId)
-                const row = btn.parentElement.parentElement.parentElement
-                const titleInput = row.getElementsByClassName("edit-title")[0]
-                const doneInput = row.getElementsByClassName("edit-done")[0]
-                const createdDate = row.getElementsByClassName("edit-created-date")[0].textContent
+            const id = Number(btn.dataset.todoId)
+            const row = btn.parentElement.parentElement.parentElement
+            const titleInput = row.getElementsByClassName("edit-title")[0]
+            const doneInput = row.getElementsByClassName("edit-done")[0]
 
+            const prevTitle = titleInput.value.trim()
+            const prevDone = doneInput.checked
+
+            btn.addEventListener("click", () => {
                 if (btn.textContent === "Edit") {
                     btn.textContent = "Save"
                 
@@ -185,9 +184,15 @@
                     titleInput.classList.remove("form-control-plaintext")
                     titleInput.classList.add("form-control")
 
-                  doneInput.removeAttribute("disabled")
+                    doneInput.removeAttribute("disabled")
                 } else {
-                    editTodo(id, titleInput.value.trim(), doneInput.checked, createdDate)
+                    const newTitle = titleInput.value.trim()
+                    const newDone = doneInput.checked
+                    // Avoid sending request when nothing changed
+                    if (newTitle != prevTitle || newDone != prevDone) {
+                        editTodo(id, titleInput.value.trim(), doneInput.checked)
+                    }
+
                     btn.textContent = "Edit"
 
                     titleInput.setAttribute("readonly", "")
@@ -196,14 +201,13 @@
 
                     doneInput.setAttribute("disabled", "")
                 }
-            
             })
         })
 
         Array.from(deleteBtns).forEach(btn => {
-            btn.addEventListener("click", () => {
+            btn.addEventListener("click", () => 
                 deleteTodo(Number(btn.dataset.todoId), btn.parentElement.parentElement.parentElement)
-            })
+            )
         })
     }
 

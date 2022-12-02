@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using System.Dynamic;
 using TodoWebApp.Data;
 using TodoWebApp.Models;
 
 namespace TodoWebApp.Controllers
 {
-
     public class HomeController : Controller
     {
         //private readonly ILogger<HomeController> _logger;

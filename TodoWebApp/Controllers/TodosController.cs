@@ -49,9 +49,9 @@ namespace TodoWebApp.Controllers
             return BadRequest("Not a valid todo.");
         }
 
-        [HttpPost("update-todo")]
+        [HttpPatch("update-todo")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UpdateTodo([FromBody]Todo todo)
+        public async Task<ActionResult> UpdateTodo([Bind("Id,Title,Done,CreatedDate")] Todo todo)
         {
             if (ModelState.IsValid && !string.IsNullOrEmpty(todo.Title))
             {
