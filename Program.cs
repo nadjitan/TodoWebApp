@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TodoWebApp.Data;
 
-var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-{
-    EnvironmentName = Environments.Production
-});
+var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsDevelopment())
 {
@@ -14,7 +11,7 @@ if (builder.Environment.IsDevelopment())
 else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<TodoWebAppContext>(options =>
-        options.UseSqlServer(Environment.GetEnvironmentVariable("DATABASE_URL")!));
+        options.UseMySQL(Environment.GetEnvironmentVariable("DATABASE_URL")!));
 }
 
 // Add services to the container.
