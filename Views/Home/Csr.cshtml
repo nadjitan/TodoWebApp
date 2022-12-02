@@ -8,7 +8,7 @@
     var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 
     var dt = new DateTime(DateTime.Now.Ticks, DateTimeKind.Unspecified);
-    var isoDateString = dt.ToString("O");
+    var isoDateString = dt.ToString("s");
 }
 
 <h2>CSR</h2>

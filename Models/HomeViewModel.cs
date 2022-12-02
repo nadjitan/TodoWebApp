@@ -16,7 +16,7 @@ namespace TodoWebApp.Models
 
         public HomeViewModel()
         { 
-            CreatedDate = DateTime.UtcNow;
+            CreatedDate = new DateTime(DateTime.Now.Ticks, DateTimeKind.Unspecified);
         }
     }
 }

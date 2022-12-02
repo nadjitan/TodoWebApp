@@ -9,7 +9,7 @@
 
         public Todo()
         {
-            CreatedDate = DateTime.UtcNow;
+            CreatedDate = new DateTime(DateTime.Now.Ticks, DateTimeKind.Unspecified);
         }
     }
 }
