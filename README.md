@@ -1,3 +1,3 @@
-﻿# TodoWebApp
+# TodoWebApp
 
-Simple todo web app usin ASP.Net MVC
+Simple todo web app using ASP.Net 6 MVC
