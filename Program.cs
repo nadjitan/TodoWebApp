@@ -8,10 +8,10 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddDbContext<TodoWebAppContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("TodoWebAppContext") ?? throw new InvalidOperationException("Connection string 'TodoWebAppContext' not found.")));
 }
-else
+else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<TodoWebAppContext>(options =>
-        options.UseSqlServer(Environment.GetEnvironmentVariable("MYSQL_URL")!));
+        options.UseMySQL(Environment.GetEnvironmentVariable("MYSQL_URL")));
 }
 
 
