@@ -15,7 +15,7 @@
 <input id="RequestVerificationToken" type="hidden" value="@requestToken" />
 
 <div class="mt-xl-5 w-100 d-flex justify-content-center">
-    <form method="PUT" action="javascript:void(0);" onsubmit="addTodo()" class="row d-flex justify-content-center">
+    <form action="javascript:void(0);" onsubmit="addTodo()" class="row d-flex justify-content-center">
         <div class="col-auto">
             <input id="add-done" type="checkbox" value="false" class="form-check-input"
                 style="height: 30px; width: 30px; cursor: pointer;" />
@@ -137,8 +137,7 @@
                            <a data-todo-id="${data.id}" style="cursor: pointer;" class="edit-todo">Edit</a>&nbsp;|&nbsp;
                            <a data-todo-id="${data.id}" style="cursor: pointer;" class="delete-todo">Delete</a>
                        </div>
-                    </td>
-                    `
+                    </td>`
 
                     table.appendChild(tr)
                     addListeners()
