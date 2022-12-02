@@ -173,11 +173,14 @@
             const titleInput = row.getElementsByClassName("edit-title")[0]
             const doneInput = row.getElementsByClassName("edit-done")[0]
 
-            const prevTitle = titleInput.value.trim()
-            const prevDone = doneInput.checked
+            let prevTitle = ""
+            let prevDone = ""
 
             btn.addEventListener("click", () => {
                 if (btn.textContent === "Edit") {
+                    prevTitle = titleInput.value.trim()
+                    prevDone = doneInput.checked
+
                     btn.textContent = "Save"
                 
                     titleInput.removeAttribute("readonly")

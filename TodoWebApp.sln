@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoWebApp", "TodoWebApp\TodoWebApp.csproj", "{CD639AB0-43CB-47BF-A44E-27BB74AE493E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoWebApp", "TodoWebApp.csproj", "{CD639AB0-43CB-47BF-A44E-27BB74AE493E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
