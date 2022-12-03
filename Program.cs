@@ -11,7 +11,7 @@ if (builder.Environment.IsDevelopment())
 else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<TodoWebAppContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DATABASE_URL")));
+        options.UseMySQL(Environment.GetEnvironmentVariable("DATABASE_URL")!));
 }
 
 // Add services to the container.
