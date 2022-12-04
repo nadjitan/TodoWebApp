@@ -2,16 +2,21 @@
 using TodoWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = "Server=localhost;Database=test;User=root;Password=;";
+var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
 
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<TodoWebAppContext>(options =>
-        options.UseMySQL(builder.Configuration.GetConnectionString("TodoWebAppContext") ?? throw new InvalidOperationException("Connection string 'TodoWebAppContext' not found.")));
+        //options.UseMySQL(builder.Configuration.GetConnectionString("TodoWebAppContext") ?? throw new InvalidOperationException("Connection string 'TodoWebAppContext' not found.")));
+        options.UseMySql(connectionString, serverVersion));
 }
 else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<TodoWebAppContext>(options =>
-        options.UseMySQL(Environment.GetEnvironmentVariable("DATABASE_URL")!));
+        //options.UseMySQL(Environment.GetEnvironmentVariable("DATABASE_URL")!));
+        options.UseMySql(connectionString, serverVersion));
 }
 
 // Add services to the container.
