@@ -15,7 +15,6 @@ if (builder.Environment.IsDevelopment())
 else if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<TodoWebAppContext>(options =>
-        //options.UseMySQL(Environment.GetEnvironmentVariable("DATABASE_URL")!));
         options.UseMySql(Environment.GetEnvironmentVariable("DATABASE_URL")!, serverVersion));
 }
 
