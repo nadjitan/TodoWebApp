@@ -14,8 +14,16 @@ if (builder.Environment.IsDevelopment())
 }
 else if (builder.Environment.IsProduction())
 {
+    var server = Environment.GetEnvironmentVariable("MYSQLHOST");
+    var db = Environment.GetEnvironmentVariable("MYSQLDATABASE");
+    var port = Environment.GetEnvironmentVariable("MYSQLPORT");
+    var user = Environment.GetEnvironmentVariable("MYSQLUSER");
+    var pass = Environment.GetEnvironmentVariable("MYSQLPASSWORD");
+
+    var prodConnection = $"server={server};database={db};port={port};user={user};password={pass};";
+
     builder.Services.AddDbContext<TodoWebAppContext>(options =>
-        options.UseMySql(Environment.GetEnvironmentVariable("DATABASE_URL")!, serverVersion));
+        options.UseMySql(prodConnection, serverVersion));
 }
 
 // Add services to the container.
