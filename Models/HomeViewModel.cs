@@ -15,7 +15,7 @@ namespace TodoWebApp.Models
         public List<Todo> Todos { get; set; } = new List<Todo>();
 
         public HomeViewModel()
-        { 
+        {
             CreatedDate = new DateTime(DateTime.Now.Ticks, DateTimeKind.Unspecified);
         }
     }

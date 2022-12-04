@@ -9,7 +9,7 @@ var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<TodoWebAppContext>(options =>
-        //options.UseMySQL(builder.Configuration.GetConnectionString("TodoWebAppContext") ?? throw new InvalidOperationException("Connection string 'TodoWebAppContext' not found.")));
+        //options.UseSqlServer(builder.Configuration.GetConnectionString("TodoWebAppContext") ?? throw new InvalidOperationException("Connection string 'TodoWebAppContext' not found.")));
         options.UseMySql(connectionString, serverVersion));
 }
 else if (builder.Environment.IsProduction())
