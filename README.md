@@ -1,8 +1,8 @@
 # TodoWebApp
 
-Simple todo web app using ASP.Net 6 MVC
+Simple todo web app using ASP.Net 6 MVC with a MySQL database.
 
-## IDEs
+## Code Editors
 
 ### Visual Studio
 
@@ -10,14 +10,7 @@ Simple todo web app using ASP.Net 6 MVC
 
 ### VS Code & others
 
-- Install [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks)
-- Add a global.json anywhere in the project folder and insert this:
-
-> This is the only version I know of that works in [Railway.app](https://railway.app/) at the time of creating this project
-
-```json
-{ "sdk": { "version": "6.0.400" } }
-```
+- Install [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks) (6.0.400). This is the only version I know of that works in [Railway.app](https://railway.app/) at the time of creating this project. You can change the SDK version in `./global.json`.
 
 - You can now run this command:
 
