@@ -16,7 +16,7 @@ Simple todo web app using ASP.Net 6 MVC
 > This is the only version I know of that works in [Railway.app](https://railway.app/) at the time of creating this project
 
 ```json
-{ "sdk": { "version": "6.0.400" } )
+{ "sdk": { "version": "6.0.400" } }
 ```
 
 - You can now run this command:
