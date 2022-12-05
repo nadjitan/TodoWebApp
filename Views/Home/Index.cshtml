@@ -36,7 +36,7 @@
 <table class="table mt-4 align-middle">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(m => m.Done)</th>
+            <th class="text-center">@Html.DisplayNameFor(m => m.Done)</th>
             <th class="w-50">@Html.DisplayNameFor(m => m.Title)</th>
             <th>@Html.DisplayNameFor(m => m.CreatedDate)</th>
             <th></th>
@@ -47,10 +47,10 @@
         @foreach (var todo in Model.Todos)
         {
             <tr style="height: 57px;">
-                <td style="text-align: center;">
+                <td class="text-center">
                     <input class="form-check-input" type="checkbox" disabled @(todo.Done ? "checked" : "") />
                 </td>
-                <td>@Html.DisplayFor(m => todo.Title)</td>
+                <td class="text-wrap">@Html.DisplayFor(m => todo.Title)</td>
                 <td>@Html.DisplayFor(m => todo.CreatedDate)</td>
                 <td class="text-end">
                     <a asp-action="Edit" asp-route-id="@todo.Id">Edit</a> |

@@ -56,7 +56,7 @@
 <table class="table mt-4 align-middle">
     <thead>
         <tr>
-            <th style="width: 60px;">@Html.DisplayNameFor(m => m.Done)</th>
+            <th class="text-center">@Html.DisplayNameFor(m => m.Done)</th>
             <th class="w-50">@Html.DisplayNameFor(m => m.Title)</th>
             <th>@Html.DisplayNameFor(m => m.CreatedDate)</th>
             <th></th>
@@ -67,10 +67,10 @@
         @foreach (var todo in Model.Todos)
         {
             <tr style="height: max-content;">
-                <td style="text-align: center;">
+                <td class="text-center">
                     <input class="form-check-input edit-done" type="checkbox" disabled @(todo.Done ? "checked" : "") />
                 </td>
-                <td><input type="text" class="form-control-plaintext edit-title" readonly value="@todo.Title" /></td>
+                <td><input type="text" class="form-control-plaintext edit-title text-wrap" readonly value="@todo.Title" /></td>
                 <td class="h-100">
                     <p class="edit-created-date h-100 d-grid align-items-center" data-raw-date="@todo.CreatedDate">
                         @todo.CreatedDate
