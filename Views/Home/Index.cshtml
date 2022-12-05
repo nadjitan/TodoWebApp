@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "SSR";
 }
-<h2>SSR</h2>
+<h2>Server-side rendering</h2>
 <div class="mt-xl-5 w-100 d-flex justify-content-center">
     <form asp-action="Create" class="row d-flex justify-content-center w-100">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -33,11 +33,11 @@
     </form>
 </div>
 
-<table class="table mt-4">
+<table class="table mt-4 align-middle">
     <thead>
         <tr>
             <th style="width: 60px;">@Html.DisplayNameFor(m => m.Done)</th>
-            <th>@Html.DisplayNameFor(m => m.Title)</th>
+            <th class="w-50">@Html.DisplayNameFor(m => m.Title)</th>
             <th>@Html.DisplayNameFor(m => m.CreatedDate)</th>
             <th></th>
         </tr>
@@ -46,7 +46,7 @@
     <tbody>
         @foreach (var todo in Model.Todos)
         {
-            <tr>
+            <tr style="height: 57px;">
                 <td style="width: 60px; text-align: center;">
                     <input class="form-check-input" type="checkbox" disabled @(todo.Done ? "checked" : "") />
                 </td>

@@ -11,7 +11,7 @@
     var isoDateString = dt.ToString("s");
 }
 
-<h2>CSR</h2>
+<h2>Client-side rendering</h2>
 <input id="RequestVerificationToken" type="hidden" value="@requestToken" />
 
 <div class="mt-xl-5 w-100 d-flex justify-content-center">
@@ -44,11 +44,11 @@
     </form>
 </div>
 
-<table class="table mt-4">
+<table class="table mt-4 align-middle">
     <thead>
         <tr>
             <th style="width: 60px;">@Html.DisplayNameFor(m => m.Done)</th>
-            <th>@Html.DisplayNameFor(m => m.Title)</th>
+            <th class="w-50">@Html.DisplayNameFor(m => m.Title)</th>
             <th>@Html.DisplayNameFor(m => m.CreatedDate)</th>
             <th></th>
         </tr>
@@ -58,10 +58,8 @@
         @foreach (var todo in Model.Todos)
         {
             <tr style="height: max-content;">
-                <td style="width: 60px; height: 100%;">
-                    <div class="d-flex align-items-center justify-content-center" style="width: 100%; height:100%;">
-                        <input class="form-check-input edit-done" type="checkbox" disabled @(todo.Done ? "checked" : "") />
-                    </div>
+                <td style="width: 60px; text-align: center;">
+                    <input class="form-check-input edit-done" type="checkbox" disabled @(todo.Done ? "checked" : "") />
                 </td>
                 <td><input type="text" class="form-control-plaintext edit-title" readonly value="@todo.Title" /></td>
                 <td class="h-100">
@@ -70,10 +68,8 @@
                     </p>
                 </td>
                 <td class="text-end">
-                    <div class="h-100 w-100 d-flex align-items-center justify-content-center">
-                        <a data-todo-id="@todo.Id" style="cursor: pointer;" class="edit-todo">Edit</a>&nbsp;|&nbsp;
-                        <a data-todo-id="@todo.Id" style="cursor: pointer;" class="delete-todo">Delete</a>
-                    </div>
+                    <a data-todo-id="@todo.Id" style="cursor: pointer;" class="edit-todo">Edit</a> |
+                    <a data-todo-id="@todo.Id" style="cursor: pointer;" class="delete-todo">Delete</a>
                 </td>
             </tr>
         }

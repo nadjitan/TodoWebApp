@@ -1,4 +1,6 @@
-﻿namespace TodoWebApp.Models
+﻿using System.Globalization;
+
+namespace TodoWebApp.Models
 {
     public class Todo
     {
@@ -9,7 +11,9 @@
 
         public Todo()
         {
-            CreatedDate = new DateTime(DateTime.Now.Ticks, DateTimeKind.Unspecified);
+            string dt = new DateTime(DateTime.Now.Ticks, DateTimeKind.Unspecified).ToString();
+            DateTime dateTime = DateTime.Parse(dt, CultureInfo.CurrentCulture);
+            CreatedDate = dateTime;
         }
     }
 }
