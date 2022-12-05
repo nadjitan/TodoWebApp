@@ -66,16 +66,12 @@
     <tbody id="table-todos">
         @foreach (var todo in Model.Todos)
         {
-            <tr style="height: max-content;">
+            <tr style="height: 55px;">
                 <td class="text-center">
                     <input class="form-check-input edit-done" type="checkbox" disabled @(todo.Done ? "checked" : "") />
                 </td>
                 <td><input type="text" class="form-control-plaintext edit-title text-wrap" readonly value="@todo.Title" /></td>
-                <td class="h-100">
-                    <p class="edit-created-date h-100 d-grid align-items-center" data-raw-date="@todo.CreatedDate">
-                        @todo.CreatedDate
-                    </p>
-                </td>
+                    <td>@todo.CreatedDate</td>
                 <td class="text-end">
                     <a data-todo-id="@todo.Id" style="cursor: pointer;" class="edit-todo">Edit</a> |
                     <a data-todo-id="@todo.Id" style="cursor: pointer;" class="delete-todo">Delete</a>
