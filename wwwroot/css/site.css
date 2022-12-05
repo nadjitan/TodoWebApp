@@ -25,15 +25,16 @@ body {
   font-family: "WorkSans";
 }
 .render-body {
-    width: 100%;
+  width: 100%;
 }
 
 .fetch-notif {
-  position: absolute;
-  visibility: hidden;
+  position: fixed;
+  visibility: visible;
   font-size: 1.25rem;
   right: 50px;
   bottom: 50px;
+
   background-color: white;
   height: max-content;
   width: max-content;
