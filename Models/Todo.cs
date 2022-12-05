@@ -11,9 +11,7 @@ namespace TodoWebApp.Models
 
         public Todo()
         {
-            string dt = new DateTime(DateTime.Now.Ticks, DateTimeKind.Unspecified).ToString();
-            DateTime dateTime = DateTime.Parse(dt, CultureInfo.CurrentCulture);
-            CreatedDate = dateTime;
+            CreatedDate = new DateTime(DateTime.Now.Ticks, DateTimeKind.Unspecified);
         }
     }
 }

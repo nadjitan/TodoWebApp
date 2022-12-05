@@ -8,28 +8,51 @@ html {
   }
 }
 
+@font-face {
+  font-family: "WorkSans";
+  src: url('../fonts/WorkSans.ttf'); 
+}
+
 html {
   position: relative;
   min-height: 100%;
+  
 }
 
 body {
   margin-bottom: 60px;
+  width: 100%;
+  font-family: "WorkSans";
+}
+.render-body {
+    width: 100%;
+}
+
+.fetch-notif {
+  position: absolute;
+  visibility: hidden;
+  font-size: 1.25rem;
+  right: 50px;
+  bottom: 50px;
+  background-color: white;
+  height: max-content;
+  width: max-content;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem 0.75rem 1rem;
+  filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
 }
 
 .todo-form {
-  display: flex;
-  width: 100%;
-  height: max-content;
-  gap: 1em;
+   flex-direction: column;
 }
-.todo-form-item {
-  display: flex;
-  flex-direction: column;
-}
-.todo-form-item > input {
-  height: 40px;
-}
-.todo-form-item:last-of-type {
-  justify-content: flex-end;
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .render-body {
+    width: 50%;
+  }
+
+  .todo-form {
+    flex-direction: row;
+  }
 }

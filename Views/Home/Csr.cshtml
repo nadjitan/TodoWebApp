@@ -11,11 +11,11 @@
     var isoDateString = dt.ToString("s");
 }
 
-<h2>Client-side rendering</h2>
+<h2 class="mt-xl-5">Client-side rendering</h2>
 <input id="RequestVerificationToken" type="hidden" value="@requestToken" />
 
-<div class="mt-xl-5 w-100 d-flex justify-content-center">
-    <form action="javascript:void(0);" onsubmit="addTodo()" class="row d-flex justify-content-center w-100">
+<div class="mt-4 w-100 d-flex justify-content-center">
+    <form action="javascript:void(0);" onsubmit="addTodo()" class="d-flex gap-2 justify-content-center w-100 todo-form">
         <div class="col-auto">
             <input id="add-done" type="checkbox" value="false" class="form-check-input"
                 style="height: 30px; width: 30px; cursor: pointer;" />
@@ -44,6 +44,15 @@
     </form>
 </div>
 
+<div class="fetch-notif">
+    Fetching&nbsp;
+    <svg xmlns="http://www.w3.org/2000/svg" style="vertical-align: -0.125em;" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-dasharray="15" stroke-dashoffset="15" stroke-linecap="round" stroke-width="2" d="M12 3C16.9706 3 21 7.02944 21 12">
+            <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
+        </path>
+    </svg>
+</div>
+
 <table class="table mt-4 align-middle">
     <thead>
         <tr>
@@ -58,7 +67,7 @@
         @foreach (var todo in Model.Todos)
         {
             <tr style="height: max-content;">
-                <td style="width: 60px; text-align: center;">
+                <td style="text-align: center;">
                     <input class="form-check-input edit-done" type="checkbox" disabled @(todo.Done ? "checked" : "") />
                 </td>
                 <td><input type="text" class="form-control-plaintext edit-title" readonly value="@todo.Title" /></td>
@@ -81,6 +90,7 @@
     const apiURL = window.location.origin + "/api/todos/"
 
     let clientTodos = []
+
     const editBtns = document.getElementsByClassName("edit-todo")
     const deleteBtns = document.getElementsByClassName("delete-todo")
 
@@ -92,10 +102,22 @@
         RequestVerificationToken: document.getElementById("RequestVerificationToken").value
     }
 
+    function toggleNotif() {
+        const fetchNotif = document.getElementsByClassName("fetch-notif")[0]
+        if (window.getComputedStyle(fetchNotif).visibility === 'hidden') {
+            fetchNotif.style.visibility = "visible"
+        } 
+        else {
+            fetchNotif.style.visibility = "hidden"
+        }
+    }
+
     function getTodos() {
+        toggleNotif()
         fetch(apiURL)
             .then(res => res.json())
             .then(data => {
+                toggleNotif()
                 console.table(data)
                 clientTodos = data
             })
@@ -103,6 +125,7 @@
     }
 
     function addTodo() {
+        toggleNotif()
         const table = document.getElementById("table-todos")
         const todo = {
             title: getInputValue("add-title"),
@@ -113,6 +136,7 @@
         fetch(apiURL + "create-todo", { method: 'PUT', headers: customHeaders, body: JSON.stringify(todo) })
             .then(res => res.json())
             .then(data => {
+                toggleNotif()
                 if (data.title) {
                     console.table(data)
                     clientTodos.push(data)
@@ -147,18 +171,24 @@
     }
 
     function editTodo(id, title, done) {
+        toggleNotif()
         const todo = { id, title, done }
 
         fetch(apiURL + 'update-todo', { method: 'PATCH', headers: customHeaders, body: JSON.stringify(todo) })
             .then(res => res.json())
-            .then(data => console.log(data))
+            .then(data => {
+                toggleNotif()
+                console.log(data)
+            })
             .catch(error => console.error('Unable to edit todo.', error))
     }
 
     function deleteTodo(id, row) {
+        toggleNotif()
         fetch(apiURL + `delete-todo/${id}`, { method: 'DELETE', headers: customHeaders })
             .then(res => res.json())
             .then(data => {
+                toggleNotif()
                 if (data.title) row.remove()
             })
             .catch(error => console.error('Unable to delete item.', error))
@@ -167,7 +197,7 @@
     function addListeners() {
         Array.from(editBtns).forEach(btn => {
             const id = Number(btn.dataset.todoId)
-            const row = btn.parentElement.parentElement.parentElement
+            const row = btn.parentElement.parentElement
             const titleInput = row.getElementsByClassName("edit-title")[0]
             const doneInput = row.getElementsByClassName("edit-done")[0]
 
@@ -207,7 +237,7 @@
 
         Array.from(deleteBtns).forEach(btn => {
             btn.addEventListener("click", () =>
-                deleteTodo(Number(btn.dataset.todoId), btn.parentElement.parentElement.parentElement)
+                deleteTodo(Number(btn.dataset.todoId), btn.parentElement.parentElement)
             )
         })
     }
