@@ -30,7 +30,7 @@ body {
 
 .fetch-notif {
   position: fixed;
-  visibility: visible;
+  visibility: hidden;
   font-size: 1.25rem;
   right: 50px;
   bottom: 50px;
