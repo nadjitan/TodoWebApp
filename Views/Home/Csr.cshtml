@@ -38,7 +38,8 @@
     Fetching&nbsp;
     <svg xmlns="http://www.w3.org/2000/svg" style="vertical-align: -0.125em;" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
         <path fill="none" stroke="currentColor" stroke-dasharray="15" stroke-dashoffset="15" stroke-linecap="round" stroke-width="2" d="M12 3C16.9706 3 21 7.02944 21 12">
-            <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
+            <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/>
+            <animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
         </path>
     </svg>
 </div>
@@ -61,7 +62,7 @@
                     <input class="form-check-input edit-done" type="checkbox" disabled @(todo.Done ? "checked" : "") />
                 </td>
                 <td><input type="text" class="form-control-plaintext edit-title text-wrap" readonly value="@todo.Title" /></td>
-                    <td>@todo.CreatedDate</td>
+                <td>@todo.CreatedDate</td>
                 <td class="text-end">
                     <a data-todo-id="@todo.Id" style="cursor: pointer;" class="edit-todo">Edit</a> |
                     <a data-todo-id="@todo.Id" style="cursor: pointer;" class="delete-todo">Delete</a>
@@ -88,22 +89,32 @@
         RequestVerificationToken: document.getElementById("RequestVerificationToken").value
     }
 
-    function toggleNotif() {
-        const fetchNotif = document.getElementsByClassName("fetch-notif")[0]
-        if (window.getComputedStyle(fetchNotif).visibility === 'hidden') {
-            fetchNotif.style.visibility = "visible"
-        } 
-        else {
-            fetchNotif.style.visibility = "hidden"
+    const fetchNotif = document.getElementsByClassName("fetch-notif")[0]
+    function toggleSlide(el, delay) {
+        const animation = () => {
+            if (window.getComputedStyle(el).opacity === "0") {
+                el.classList.add("slide-in-bottom")
+                el.classList.remove("slide-out-bottom")
+            }
+            else {
+                el.classList.remove("slide-in-bottom")
+                el.classList.add("slide-out-bottom")
+            }
+        }
+
+        if (delay) {
+            setTimeout(() => animation(), delay)
+        } else {
+            animation()
         }
     }
 
     function getTodos() {
-        toggleNotif()
+        toggleSlide(fetchNotif)
         fetch(apiURL)
             .then(res => res.json())
             .then(data => {
-                toggleNotif()
+                toggleSlide(fetchNotif, 400)
                 console.table(data)
                 clientTodos = data
             })
@@ -111,7 +122,7 @@
     }
 
     function addTodo() {
-        toggleNotif()
+        toggleSlide(fetchNotif)
         const table = document.getElementById("table-todos")
         const todo = {
             title: getInputValue("add-title"),
@@ -122,7 +133,7 @@
         fetch(apiURL + "create-todo", { method: 'PUT', headers: customHeaders, body: JSON.stringify(todo) })
             .then(res => res.json())
             .then(data => {
-                toggleNotif()
+                toggleSlide(fetchNotif, 400)
                 if (data.title) {
                     console.table(data)
                     clientTodos.push(data)
@@ -130,22 +141,14 @@
                     tr.style.height = "max-content"
 
                     tr.innerHTML = `
-                    <td style="width: 60px; height: 100%;">
-                        <div class="d-flex align-items-center justify-content-center" style="width: 100%; height:100%;">
+                    <td style="height: 55px;">
                         <input class="form-check-input edit-done" type="checkbox" disabled ${data.done ? 'checked' : ''} />
-                    </div>
                     </td>
-                    <td><input type="text" class="form-control-plaintext edit-title" readonly value="${data.title}" /></td>
-                    <td class="h-100">
-                        <p class="edit-created-date h-100 d-grid align-items-center">
-                            ${new Date(data.createdDate).toLocaleString()}
-                        </p>
-                    </td>
+                    <td><input type="text" class="form-control-plaintext edit-title text-wrap" readonly value="${data.title}" /></td>
+                    <td>${new Date(data.createdDate).toLocaleString()}</td>
                     <td class="text-end">
-                       <div class="h-100 w-100 d-flex align-items-center justify-content-center">
-                           <a data-todo-id="${data.id}" style="cursor: pointer;" class="edit-todo">Edit</a>&nbsp;|&nbsp;
-                           <a data-todo-id="${data.id}" style="cursor: pointer;" class="delete-todo">Delete</a>
-                       </div>
+                       <a data-todo-id="${data.id}" style="cursor: pointer;" class="edit-todo">Edit</a> | 
+                       <a data-todo-id="${data.id}" style="cursor: pointer;" class="delete-todo">Delete</a>
                     </td>`
 
                     table.appendChild(tr)
@@ -157,24 +160,24 @@
     }
 
     function editTodo(id, title, done) {
-        toggleNotif()
+        toggleSlide(fetchNotif)
         const todo = { id, title, done }
 
         fetch(apiURL + 'update-todo', { method: 'PATCH', headers: customHeaders, body: JSON.stringify(todo) })
             .then(res => res.json())
             .then(data => {
-                toggleNotif()
+                toggleSlide(fetchNotif, 400)
                 console.log(data)
             })
             .catch(error => console.error('Unable to edit todo.', error))
     }
 
     function deleteTodo(id, row) {
-        toggleNotif()
+        toggleSlide(fetchNotif)
         fetch(apiURL + `delete-todo/${id}`, { method: 'DELETE', headers: customHeaders })
             .then(res => res.json())
             .then(data => {
-                toggleNotif()
+                toggleSlide(fetchNotif, 400)
                 if (data.title) row.remove()
             })
             .catch(error => console.error('Unable to delete item.', error))

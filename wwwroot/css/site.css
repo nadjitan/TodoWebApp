@@ -29,8 +29,10 @@ body {
 }
 
 .fetch-notif {
+  /*visibility: hidden;*/
+  opacity: 0;
+
   position: fixed;
-  visibility: hidden;
   font-size: 1.25rem;
   right: 50px;
   bottom: 50px;
@@ -56,4 +58,33 @@ body {
   .todo-form {
     flex-direction: row;
   }
+}
+
+.slide-in-bottom {
+    animation: slide-in-bottom 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+@keyframes slide-in-bottom {
+    0% {
+        bottom: -20px;
+        opacity: 0;
+    }
+
+    100% {
+        bottom: 50px;
+        opacity: 1;
+    }
+}
+.slide-out-bottom {
+    animation: slide-out-bottom 0.3s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}
+@keyframes slide-out-bottom {
+    0% {
+        bottom: 50px;
+        opacity: 1;
+    }
+
+    100% {
+        bottom: -20px;
+        opacity: 0;
+    }
 }
