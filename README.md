@@ -19,3 +19,12 @@ Simple todo web app using ASP.Net 6 MVC with a MySQL database.
 ```sh
 $ dotnet watch run --launch-profile HotReload
 ```
+
+## Railway Deployment
+
+- Add a MySQL database and connect your github repo
+- Once it is connected and your website is built add these vars:
+  ![Railway vars](./samples/railway_vars.jpg)
+> MySQL variables will be automatically generated. See [Program.cs](https://github.com/nadjitan/TodoWebApp/blob/master/Program.cs#L17) to know how it is consumed.
+- `DOTNET_ENVIRONMENT`: Production
+- `PORT`: 3000 _(It is usually this number but you can check it when your website is done building in the **Deployments** > **View Logs**)_
