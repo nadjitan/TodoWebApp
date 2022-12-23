@@ -22,17 +22,16 @@ $ dotnet watch run --launch-profile HotReload
 
 ## Railway Deployment
 
-- Add a MySQL database and connect your github repo
-- Once it is connected and your website is built add these vars:\
-  ![Railway vars](./samples/railway_vars.jpg)
-  > MySQL variables will be automatically generated. See [Program.cs](https://github.com/nadjitan/TodoWebApp/blob/master/Program.cs#L17) to know how it is consumed.
-- `DOTNET_ENVIRONMENT`: Production
-- `PORT`: 3000 _(It is usually this number but you can check it when your website is done building in the **Deployments** > **View Logs**)_
-- Lastly add a property group in the `<AppName>.csproj` file. This property group will only be applied during production.
+- Add a property group in the `<AppName>.csproj` file. This property group will only be applied during production.
 
 ```xml
 <PropertyGroup Condition="'$(Configuration)' != '' AND '$(Configuration)' != 'Debug'">
   <InvariantGlobalization>true</InvariantGlobalization>
-  <EnvironmentName>Production</EnvironmentName>
 </PropertyGroup>
 ```
+
+- Add a MySQL database in your Railway project and connect your github repo
+- Once it is connected and your website is built add these vars:\
+  ![Railway vars](./samples/railway_vars.jpg)
+  > MySQL variables will be automatically generated. See [Program.cs](https://github.com/nadjitan/TodoWebApp/blob/master/Program.cs#L17) to know how it is consumed.
+- `PORT`: 3000 _(It is usually this number but you can check it when your website is done building in the **Deployments** > **View Logs**)_
