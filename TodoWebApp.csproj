@@ -8,7 +8,6 @@
   <!--Production-->
   <PropertyGroup Condition="'$(Configuration)' != '' AND '$(Configuration)' != 'Debug'">
     <InvariantGlobalization>true</InvariantGlobalization>
-    <EnvironmentName>Production</EnvironmentName>
   </PropertyGroup>
 
   <ItemGroup>

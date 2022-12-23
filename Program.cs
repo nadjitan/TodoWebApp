@@ -9,9 +9,11 @@ if (builder.Environment.IsDevelopment())
     //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     var connectionString = "Server=localhost;Database=test;User=root;Password=;";
 
-    builder.Services.AddDbContext<TodoWebAppContext>(options =>
-        //options.UseSqlServer(builder.Configuration.GetConnectionString("TodoWebAppContext") ?? throw new InvalidOperationException("Connection string 'TodoWebAppContext' not found.")));
-        options.UseMySql(connectionString, serverVersion));
+    builder
+        .Services
+        .AddDbContext<TodoWebAppContext>(options =>
+            //options.UseSqlServer(builder.Configuration.GetConnectionString("TodoWebAppContext") ?? throw new InvalidOperationException("Connection string 'TodoWebAppContext' not found.")));
+            options.UseMySql(connectionString, serverVersion));
 }
 else if (builder.Environment.IsProduction())
 {
@@ -23,8 +25,9 @@ else if (builder.Environment.IsProduction())
 
     var prodConnection = $"server={server};database={db};port={port};user={user};password={pass};";
 
-    builder.Services.AddDbContext<TodoWebAppContext>(options =>
-        options.UseMySql(prodConnection, serverVersion));
+    builder
+        .Services
+        .AddDbContext<TodoWebAppContext>(options => options.UseMySql(prodConnection, serverVersion));
 }
 
 // Add services to the container.
