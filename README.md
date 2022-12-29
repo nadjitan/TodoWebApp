@@ -33,5 +33,5 @@ $ dotnet watch run --launch-profile HotReload
 - Add a MySQL database in your Railway project and connect your github repo
 - Once it is connected and your website is built add these vars:\
   ![Railway vars](./samples/railway_vars.jpg)
-  > MySQL variables will be automatically generated. See [Program.cs](https://github.com/nadjitan/TodoWebApp/blob/master/Program.cs#L17) to know how it is consumed.
+  > MySQL variables will be automatically generated. See [Program.cs](https://github.com/nadjitan/TodoWebApp/blob/master/Program.cs#L18) to know how it is consumed.
 - `PORT`: 3000 _(It is usually this number but you can check it when your website is done building in the **Deployments** > **View Logs**)_
